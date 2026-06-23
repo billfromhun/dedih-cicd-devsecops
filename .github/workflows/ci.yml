@@ -20,6 +20,7 @@ jobs:
   build-and-test:
     name: Build és teszt
     runs-on: ubuntu-latest
+    environment: "production"
     steps:
       - name: Repo letöltése
         uses: actions/checkout@v4
@@ -83,23 +84,23 @@ jobs:
   # requirements.txt-t és leállítja a buildet, ha ismert CVE van benne.
   # A PyPA tartja karban, ezért konvencionálisan ezt választjuk.
   # ============================================================================
-  # sca-audit:
-  #   name: SCA audit (pip-audit)
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Repo letöltése
-  #       uses: actions/checkout@v4
-  #
-  #     - name: Python beállítása
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: "3.11"
-  #
-  #     - name: Függőségek telepítése
-  #       run: pip install -r requirements.txt
-  #
-  #     - name: Audit futtatása
-  #       run: pip-audit -r requirements.txt
+  sca-audit:
+     name: SCA audit (pip-audit)
+     runs-on: ubuntu-latest
+     steps:
+       - name: Repo letöltése
+         uses: actions/checkout@v4
+  
+       - name: Python beállítása
+         uses: actions/setup-python@v5
+         with:
+           python-version: "3.11"
+  
+       - name: Függőségek telepítése
+         run: pip install -r requirements.txt
+  
+       - name: Audit futtatása
+         run: pip-audit -r requirements.txt
 
   # ============================================================================
   # BLOCK 5 UNLOCK: AI assisted code review
@@ -109,19 +110,19 @@ jobs:
   # repository secret. A demóban csak a kommentet vesszük le, éles használathoz
   # a token beállítása szükséges.
   # ============================================================================
-  # ai-review:
-  #   name: AI code review (Claude)
-  #   runs-on: ubuntu-latest
-  #   # Least privilege: csak annyi jog, amennyi szükséges
-  #   permissions:
-  #     contents: read         # a PR diff kiolvasásához
-  #     pull-requests: write   # hogy a Claude review-kommenteket írhasson
-  #   if: github.event_name == 'pull_request'
-  #   steps:
-  #     - name: Repo letöltése
-  #       uses: actions/checkout@v4
-  #
-  #     - name: Claude Code Action
-  #       uses: anthropics/claude-code-action@v1
-  #       with:
-  #         claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+  ai-review:
+    name: AI code review (Claude)
+    runs-on: ubuntu-latest
+     # Least privilege: csak annyi jog, amennyi szükséges
+     permissions:
+       contents: read         # a PR diff kiolvasásához
+       pull-requests: write   # hogy a Claude review-kommenteket írhasson
+     if: github.event_name == 'pull_request'
+     steps:
+       - name: Repo letöltése
+         uses: actions/checkout@v4
+  
+       - name: Claude Code Action
+         uses: anthropics/claude-code-action@v1
+         with:
+           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
