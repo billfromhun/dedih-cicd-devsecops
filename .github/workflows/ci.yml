@@ -110,7 +110,7 @@ jobs:
   # repository secret. A demóban csak a kommentet vesszük le, éles használathoz
   # a token beállítása szükséges.
   # ============================================================================
-  ai-review:
+   ai-review:
     name: AI code review (Claude)
     runs-on: ubuntu-latest
      # Least privilege: csak annyi jog, amennyi szükséges
