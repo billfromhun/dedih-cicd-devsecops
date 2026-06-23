@@ -84,7 +84,7 @@ jobs:
   # requirements.txt-t és leállítja a buildet, ha ismert CVE van benne.
   # A PyPA tartja karban, ezért konvencionálisan ezt választjuk.
   # ============================================================================
-  sca-audit:
+   sca-audit:
      name: SCA audit (pip-audit)
      runs-on: ubuntu-latest
      steps:
